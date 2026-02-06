@@ -1,0 +1,145 @@
+
+<%
+if(session.getAttribute("userId")==null || session.getAttribute("userId")=="")
+{
+response.sendRedirect("../login.jsp");
+}
+else
+{
+%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="DbPack.DbManager"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>User Home</title>
+        <link rel ="stylesheet" href="css/bootstrap.css"/>
+        <script src="js/bootstrap.bundle.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <style>
+            body{
+              font-family:arial;
+              background-color:#92A8D1;
+            }
+            .nav-item:hover{
+        background-color: yellow;
+        color: white;
+        transition: all 0.6s ease-in-out;
+        transform: scale(1.1);
+        display:inline-block;
+        border-radius:15px;
+    }
+        </style>
+    </head>
+    <body style="">
+          <!--navbar -->
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-sm-12">
+                    <nav class="navbar navbar-expand-lg bg-body-secondary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="adminHome.jsp" style="margin-left:230px;">Home</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="booking.jsp" style="margin-left:230px;">Booking History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="add_Train.jsp" style="margin-left:230px;">Add Train </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="logout.jsp" style="margin-left:230px;"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+                </div>
+            </div>
+            <!--navbar ends-->
+          <!--profile show-->
+          <div class="row mt-5">
+          <div class="col-sm-12">
+              <h1 style="text-align: center;background-color: brown;color: white;">Booking History</h1>
+              <table class="table table-bordered">
+                  <tr>
+                      <th>
+                          Name
+                      </th>
+                       <th>
+                          Age
+                      </th>
+                       <th>
+                          Journey Date
+                      </th>
+                       <th>
+                          Price
+                      </th>
+                       <th>
+                          Train Name
+                      </th>
+                       <th>
+                          Pnr
+                      </th>
+                       <th>
+                          From
+                      </th>
+                       <th>
+                          To
+                      </th>
+                       <th>
+                          Booking Date
+                      </th>
+                  </tr>
+                  <%
+                      String userId=session.getAttribute("userId").toString();
+                  DbManager dm=new DbManager();
+                  ResultSet rs=dm.select("select * from bookingrecord left join train_details on bookingrecord.trainid=train_details.id");
+                  while(rs.next())
+                  {
+                      %>
+                      <tr>
+                          <td>
+                              <%=rs.getString("name")%>
+                          </td>
+                          <td>
+                              <%=rs.getString("age")%>
+                          </td>
+                          <td>
+                              <%=rs.getString("doj")%>
+                          </td>
+                          <td>
+                              <%=rs.getString("price")%>
+                          </td>
+                          <td>
+                              <%=rs.getString("trainName")%>
+                          </td>
+                          <td>
+                              <%=rs.getString("pnr")%>
+                          </td>
+                          <td>
+                              <%=rs.getString("startingStation")%>
+                          </td>
+                          <td>
+                             <%=rs.getString("endingStation")%>
+                          </td>
+                          <td>
+                              <%=rs.getString("date")%>
+                          </td>
+                      </tr>
+                  <%
+                  }
+                  %>
+              </table>
+       </div>
+           </div>
+       </div>
+    </body>
+</html>
+<% } %>
